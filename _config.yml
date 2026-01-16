@@ -17,27 +17,27 @@ url                      : "https://www.ljlearning.xyz" # 你的自定义域名
 baseurl                  : "" # 使用自定义域名时留空
 repository               : "DOUBLRJIE/my-academic-site-new.github.io" # 👈 已更新：你的仓库地址
 
-# Site Author
 author:
-  avatar           : "profile.png" # ⚠️ 记得上传一张照片到 images 文件夹并命名为 profile.png
-  name             : "Jie Liu"     # 侧边栏名字
-  pronouns         : "he/him"      
+  avatar           : "profile.png"
+  name             : "Jie Liu"
+  pronouns         : "he/him"
   bio              : "Undergraduate student in <b>Artificial Intelligence</b> at Jiangsu Normal University. Focus on Embedded Systems & Computer Vision."
   location         : "Xuzhou, Jiangsu"
   employer         : "Jiangsu Normal University"
   uri              : "https://www.ljlearning.xyz"
-  email            : "lj_1592003@163.com" # 你的邮箱
+  email            : "lj_1592003@163.com" # ✅ 保留这一行就够了
 
-  # Academic websites (学术链接，暂时留空或注释)
-  # googlescholar    : 
-  # orcid            : 
+  # Academic websites (留空即可)
+  # googlescholar    :
+  # orcid            :
 
-  # Repositories (代码仓库)
-  github           : "DOUBLRJIE" # 👈 已更新：侧边栏会显示 GitHub 图标并链接到你的主页
+  # Repositories
+  github           : "DOUBLRJIE" # 你的 GitHub
 
-  # Social media (社交媒体)
-  # bilibili         : # 如果以后想加可以填
-# Publication Category - The following the list of publication categories and their headings
+  # Social media (把多余的 email 删了)
+  # bilibili         :
+
+
 publication_category:
   books:
     title: 'Books'
