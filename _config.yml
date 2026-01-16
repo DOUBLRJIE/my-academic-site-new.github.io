@@ -7,45 +7,37 @@
 # server process.
 
 # Basic Site Settings
-locale                   : "zh-CN" # 如果你想把网站菜单变成中文，可以尝试改为 "zh-CN"
+locale                   : "en-US"
 site_theme               : "default"
-[cite_start]title                    : "刘杰 (Jie Liu)" # 浏览器标签页显示的标题 [cite: 1]
+title                    : "刘杰 (Jie Liu)" # 浏览器标签页标题
 title_separator          : "-"
-name                     : &name "Jie Liu" # 网站左上角显示的名字，建议用英文名显得国际化
-description              : &description "Portfolio of Jie Liu - Embedded Engineer & AI Researcher." # 网站描述，SEO用
+name                     : &name "Jie Liu"  # 侧边栏大标题
+description              : &description "Portfolio of Jie Liu - Embedded Engineer & AI Researcher."
 url                      : "https://www.ljlearning.xyz" # 你的自定义域名
-baseurl                  : "" # 使用自定义域名时，通常留空
-repository               : "你的GitHub用户名/academic-profile" # ⚠️注意：这里必须改成你Fork后的仓库地址，例如 liujie/my-resume
+baseurl                  : "" # 使用自定义域名时留空
+repository               : "DOUBLRJIE/my-academic-site-new.github.io" # 👈 已更新：你的仓库地址
 
 # Site Author
 author:
-  # Biographic information
-  avatar           : "profile.png" # 请确保你上传了名为 profile.png 的照片到 images 文件夹
+  avatar           : "profile.png" # ⚠️ 记得上传一张照片到 images 文件夹并命名为 profile.png
   name             : "Jie Liu"     # 侧边栏名字
-  pronouns         : "he/him"      # 选填
-  bio              : "Undergraduate student in <b>Artificial Intelligence</b> at Jiangsu Normal University. Focus on Embedded Systems & Computer Vision." 
-  # 侧边栏简介：根据你的专业和主修方向编写。支持HTML加粗。
-  [cite_start]location         : "Xuzhou, Jiangsu" # 学校所在地 
-  [cite_start]employer         : "Jiangsu Normal University" # 你的学校 
+  pronouns         : "he/him"      
+  bio              : "Undergraduate student in <b>Artificial Intelligence</b> at Jiangsu Normal University. Focus on Embedded Systems & Computer Vision."
+  location         : "Xuzhou, Jiangsu"
+  employer         : "Jiangsu Normal University"
   uri              : "https://www.ljlearning.xyz"
-  [cite_start]email            : "lj_1592003@163.com" # 你的邮箱 [cite: 7]
+  email            : "lj_1592003@163.com" # 你的邮箱
 
-  # Academic websites
-  # 如果你有这些学术账号可以填，没有就留空或注释掉
-  googlescholar    : # "https://scholar.google.com/..." 
-  orcid            : # "https://orcid.org/..."
-  researchgate     : # URL
+  # Academic websites (学术链接，暂时留空或注释)
+  # googlescholar    : 
+  # orcid            : 
 
-  # Repositories and software development
-  github           : "你的GitHub用户名" # ⚠️注意：这里填你的GitHub用户名，侧边栏会显示GitHub图标
+  # Repositories (代码仓库)
+  github           : "DOUBLRJIE" # 👈 已更新：侧边栏会显示 GitHub 图标并链接到你的主页
 
-  # Social media
-  # 建议保留常用的，其他的留空即可
-  linkedin         : # "https://www.linkedin.com/in/..." 
-  twitter          : # URL
-  bilibili         : # 如果你想加B站（需要修改模板代码，或者借用其他图标），暂时留空
-  zhihu            : # URL
-  email            : "mailto:lj_1592003@163.com" # 侧边栏的邮件图标链接
+  # Social media (社交媒体)
+  # bilibili         : # 如果以后想加可以填
+  email            : "mailto:lj_1592003@163.com" # 侧边栏邮件图标点击发送
 # Publication Category - The following the list of publication categories and their headings
 publication_category:
   books:
