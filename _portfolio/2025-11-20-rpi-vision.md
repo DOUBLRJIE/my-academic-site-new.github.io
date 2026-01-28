@@ -135,8 +135,12 @@ svr.Get("/stream.mjpg", [](const httplib::Request&, httplib::Response& res) {
 * **开发效率**：Python 版本开发仅耗时 2 天，而 C++ 版本涉及 CMake 配置和手动内存管理，耗时约 5 天。
 * **工程价值**：该项目展示了从快速原型验证 (POC) 到高性能产品交付的完整工程链路。
 
-## 📂 相关资源
+### 📂 原创教程文档下载 (PDF)
+这是我编写的完整开发文档，共计 40+ 页，包含详细的配置步骤和代码解析：
 
-由于教程文档是我原创撰写，由于篇幅限制，这里提供核心代码下载：
+* [<i class="fas fa-file-pdf"></i> **VS Code 远程开发配置指南** (PDF)](/files/tutorial-vscode.pdf)
+* [<i class="fas fa-file-pdf"></i> **Python (Gradio) 实战教程** (PDF)](/files/tutorial-python.pdf)
+* [<i class="fas fa-file-pdf"></i> **C++ (OpenCV) 高性能实战教程** (PDF)](/files/tutorial-cpp.pdf)
 
-<i class="fab fa-github"></i> [查看完整源代码 (GitHub)](#)
+[<i class="fab fa-github"></i> 查看完整项目源代码 (GitHub)](https://github.com/DOUBLRJIE)
+
