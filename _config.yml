@@ -175,6 +175,7 @@ kramdown:
 
 
 # These settings control the types of collections used by the template
+# 开启项目集功能
 collections:
   portfolio:
     output: true
@@ -185,9 +186,6 @@ collections:
   teaching:
     output: true
     permalink: /teaching/:path/
-  talks:
-    output: true
-    permalink: /talks/:path/
 
 
 # These settings control how pages and collections are included in the site
