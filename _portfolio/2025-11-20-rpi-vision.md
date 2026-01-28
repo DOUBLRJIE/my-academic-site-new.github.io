@@ -81,6 +81,27 @@ def build_mask_from_hsv_ranges(bgr, hsv_ranges):
     <em>图2：基于 Gradio 的交互式控制台</em>
 </div>
 
+### 🔬 算法验证：基于 Flask 的实时边缘检测 (Algorithm Demo)
+在最终集成 Gradio 之前，我首先使用轻量级的 **Flask** 框架编写了原型脚本 (`bianjie.py`)，验证了 OpenCV Canny 算子在树莓派上的实时性能。
+
+* **实现原理**：通过 Python 生成器 (`yield`) 将处理后的 OpenCV 帧封装为 HTTP Multipart 流，直接推送到浏览器。
+* **算法效果**：实现了边缘叠加 (Overlay) 与 热力图 (Heatmap) 两种显示模式。
+
+<div style="margin: 20px 0;">
+  <img src="/images/edge-code.jpg" alt="VS Code Flask 开发代码" style="width: 100%; border-radius: 5px; margin-bottom: 10px;">
+  
+  <div style="display: flex; gap: 10px;">
+    <div style="flex: 1;">
+      <img src="/images/edge-green.jpg" alt="绿色边缘叠加" style="width: 100%; border-radius: 5px;">
+      <center><em>模式 A: 原始画面叠加绿色边缘</em></center>
+    </div>
+    <div style="flex: 1;">
+      <img src="/images/edge-heatmap.jpg" alt="彩色边缘检测" style="width: 100%; border-radius: 5px;">
+      <center><em>模式 B: 纯边缘热力图模式</em></center>
+    </div>
+  </div>
+</div>
+
 ---
 
 ## ⚡ 模块三：C++ 版本实现 (高性能重构)
