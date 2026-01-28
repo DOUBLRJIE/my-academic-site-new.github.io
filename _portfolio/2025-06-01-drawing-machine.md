@@ -119,9 +119,3 @@ void Step_Motor_S_Curve(int steps, int speed_k) {
 </div>
 
 ---
-
-[<i class="fas fa-file-pdf"></i> 点击查看该项目的详细技术文档 (PDF)](https://www.google.com/search?q=/files/project_doc.pdf)
-
-```
-
-```
