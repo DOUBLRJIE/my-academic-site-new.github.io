@@ -27,7 +27,7 @@ redirect_from:
 </div>
 
 * **专业**: 人工智能 (B.E. in Artificial Intelligence)
-* **GPA**: 3.0/5.0
+* **GPA**: 3.1/5.0
 * **核心课程**: 嵌入式系统设计, 计算机视觉, 深度学习, C++/Python 程序设计, 数据结构与算法
 * **主修方向**: 嵌入式 AI 应用 (Embedded AI) & 边缘计算
 
