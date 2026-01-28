@@ -1,11 +1,7 @@
 main:
   - title: "Home"
     url: /
-  - title: "About"
-    url: /#about-me
   - title: "Portfolio"
     url: /portfolio/
   - title: "CV"
     url: /cv/
-  - title: "Guide"
-    url: /markdown/
