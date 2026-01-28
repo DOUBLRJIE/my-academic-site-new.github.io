@@ -108,13 +108,13 @@ void Step_Motor_S_Curve(int steps, int speed_k) {
 </video>
 </div>
 
-### 3. 绘制五角星 (Pentagram)
+### 3. 绘制圆 (Round)
 
 *难点：直线段的精确衔接与电机急停急转的惯性抑制。*
 
 <div style="margin: 15px 0;">
 <video width="100%" controls style="display: block; width: 100%;">
-<source src="/images/demo-star.mp4" type="video/mp4">
+<source src="/images/demo-round.mp4" type="video/mp4">
 </video>
 </div>
 
