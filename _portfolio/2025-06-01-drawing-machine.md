@@ -83,39 +83,37 @@ void Step_Motor_S_Curve(int steps, int speed_k) {
 **解决**：设计了一个环形缓冲区（Ring Buffer），并定义了帧头帧尾协议 `0xAA ... 0x55`，彻底解决了数据解析问题。
 
 ---
-
 ## 🎥 实物运行演示 (Live Demo)
 
 这里展示系统在实际运行中的表现。视频未加速，可以清晰看到步进电机在绘制不同曲率线条时的加减速控制效果。
 
 ### 1. 绘制正弦波 (Sine Wave)
-
 *难点：验证 Bresenham 算法在连续曲线上的插补平滑度。*
 
 <div style="margin: 15px 0;">
-<video width="100%" controls style="display: block; width: 100%;">
-<source src="/images/demo-sine.mp4" type="video/mp4">
-</video>
+  <video width="100%" controls style="display: block; width: 100%; transform: rotate(180deg);">
+    <source src="/images/demo-sine.mp4" type="video/mp4">
+    您的浏览器不支持 Video 标签，请升级浏览器。
+  </video>
 </div>
 
 ### 2. 绘制爱心 (Heart Shape)
-
 *难点：对称图形的坐标变换与尖角处的路径规划。*
 
 <div style="margin: 15px 0;">
-<video width="100%" controls style="display: block; width: 100%;">
-<source src="/images/demo-heart.mp4" type="video/mp4">
-</video>
+  <video width="100%" controls style="display: block; width: 100%; transform: rotate(180deg);">
+    <source src="/images/demo-heart.mp4" type="video/mp4">
+    您的浏览器不支持 Video 标签，请升级浏览器。
+  </video>
 </div>
 
-### 3. 绘制圆 (Round)
-
+### 3. 绘制五角星 (Pentagram)
 *难点：直线段的精确衔接与电机急停急转的惯性抑制。*
 
 <div style="margin: 15px 0;">
-<video width="100%" controls style="display: block; width: 100%;">
-<source src="/images/demo-round.mp4" type="video/mp4">
-</video>
+  <video width="100%" controls style="display: block; width: 100%; transform: rotate(180deg);">
+    <source src="/images/demo-star.mp4" type="video/mp4">
+    您的浏览器不支持 Video 标签，请升级浏览器。
+  </video>
 </div>
-
 ---
