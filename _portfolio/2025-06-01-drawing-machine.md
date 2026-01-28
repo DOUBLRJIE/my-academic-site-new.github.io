@@ -1,6 +1,6 @@
 ---
 title: "二维云台绘图系统 (Two-Axis Drawing Gimbal)"
-excerpt: "基于 TI MSPG3507 与 Fusion360 建模的软硬结合项目，实现了复杂图形的高精度绘制。"
+excerpt: "基于 TI MSPG3507 与 Fusion360 建模的软硬结合项目，实现了复杂图形的高精度绘制。<br/><img src='/images/gimbal-cover.jpg' width='400'>""
 collection: portfolio
 date: 2025-06-01
 header:
