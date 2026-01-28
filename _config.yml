@@ -23,7 +23,7 @@ author:
   github           : "DOUBLRJIE"
 
 # =========================================================
-# ⚠️ 核心引擎配置 (之前丢失的部分)
+# ⚠️ 核心引擎配置
 # =========================================================
 markdown: kramdown
 highlighter: rouge
@@ -31,7 +31,7 @@ permalink: /:categories/:title/
 paginate: 5
 paginate_path: /page:num/
 
-# 允许生成项目页面 (Critical Fix)
+# 允许生成项目页面
 collections:
   portfolio:
     output: true
@@ -71,5 +71,7 @@ plugins:
   - jemoji
   - jekyll-include-cache
 
-# 忽略系统文件
-exclude: ["node_modules", "Gemfile", "Gemfile.lock", "LICENSE", "README.md", "package.json", "package-lock.json"]
+# =========================================================
+# 🚫 忽略文件 (已修复：添加 vendor)
+# =========================================================
+exclude: ["node_modules", "Gemfile", "Gemfile.lock", "LICENSE", "README.md", "package.json", "package-lock.json", "vendor"]
