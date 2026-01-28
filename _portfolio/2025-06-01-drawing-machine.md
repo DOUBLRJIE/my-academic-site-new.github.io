@@ -1,10 +1,11 @@
 ---
 title: "二维云台绘图系统 (Two-Axis Drawing Gimbal)"
-excerpt: "基于 TI MSPG3507 与 Fusion360 建模的软硬结合项目，实现了复杂图形的高精度绘制。<br/><img src='/images/gimbal-cover.jpg' width='400'>"
+excerpt: "基于 TI MSPG3507 与 Fusion360 建模的软硬结合项目，实现了复杂图形的高精度绘制。"
 collection: portfolio
 date: 2025-06-01
+header:
+  teaser: /images/gimbal-cover.jpg
 ---
-
 ## 🛠 项目概述 (Project Overview)
 
 这是一个典型的**机械电控一体化**项目。我独立设计并制作了一个二自由度（2-DOF）云台，能够控制激光笔或画笔在墙面上绘制预设的图形（如正弦波、圆形、五角星）。
