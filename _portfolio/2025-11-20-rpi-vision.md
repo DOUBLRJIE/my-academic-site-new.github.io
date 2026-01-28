@@ -34,10 +34,8 @@ header:
 为了解决传统嵌入式开发“写代码在电脑，跑代码在板子”的割裂感，我搭建了基于 **VS Code Remote-SSH** 的无缝开发环境。
 
 ### 关键配置
-通过配置 SSH 免密登录与 `~/.ssh/config`，实现了像开发本地项目一样开发树莓派。
 
-![VS Code Remote 开发环境](/images/rpi-vscode.jpg)
-*图1：VS Code 远程连接树莓派进行代码调试*
+通过配置 SSH 免密登录与 `~/.ssh/config`，实现了像开发本地项目一样开发树莓派。
 
 ```bash
 # SSH Config 配置示例
@@ -45,14 +43,25 @@ Host rpi
     HostName 192.168.1.180
     User pi
     IdentityFile ~/.ssh/id_ed25519
-🐍 模块二：Python 版本实现 (Gradio 低代码)
+```
+
+<div style="margin: 20px 0;">
+    <img src="/images/rpi-vscode.jpg" alt="VS Code Remote 开发环境" style="width: 100%; border-radius: 5px;">
+    <br>
+    <em>图1：VS Code 远程连接树莓派进行代码调试</em>
+</div>
+
+---
+
+## 🐍 模块二：Python 版本实现 (Gradio 低代码)
+
 在 Python 版本中，我使用了 Gradio 框架，仅用 300 行代码就实现了一个包含实时画面、控制面板、参数调节的现代化 Web UI。
 
-核心算法：基于 HSV 的颜色报警
+### 核心算法：基于 HSV 的颜色报警
+
 利用 OpenCV 将 BGR 转换到 HSV 空间，并处理红色在 Hue 环上的“跨界”问题（0°和179°）。
 
-Python
-
+```python
 # 核心逻辑：构建 HSV 掩膜 (Python)
 def build_mask_from_hsv_ranges(bgr, hsv_ranges):
     hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
@@ -64,16 +73,25 @@ def build_mask_from_hsv_ranges(bgr, hsv_ranges):
         # 逻辑或操作，合并多个颜色区间
         mask = m if mask is None else cv2.bitwise_or(mask, m)
     return cv2.medianBlur(mask, 5) # 中值滤波去噪
-图2：基于 Gradio 的交互式控制台
+```
 
-⚡ 模块三：C++ 版本实现 (高性能重构)
+<div style="margin: 20px 0;">
+    <img src="/images/rpi-gradio.jpg" alt="Python Gradio 运行界面" style="width: 100%; border-radius: 5px;">
+    <br>
+    <em>图2：基于 Gradio 的交互式控制台</em>
+</div>
+
+---
+
+## ⚡ 模块三：C++ 版本实现 (高性能重构)
+
 为了追求极致的性能（FPS），我使用 C++ 17 重构了整个系统。移除了 Python 解释器的开销，直接操作内存。
 
-难点攻克：MJPEG 流媒体服务器
+### 难点攻克：MJPEG 流媒体服务器
+
 在 C++ 中没有 Gradio 这样现成的库，我使用 cpp-httplib 手写了一个多线程 HTTP 服务器，实现了 MJPEG 视频流的推送。
 
-C++
-
+```cpp
 // MJPEG 推流核心代码 (C++)
 svr.Get("/stream.mjpg", [](const httplib::Request&, httplib::Response& res) {
     res.set_content_provider(
@@ -101,14 +119,24 @@ svr.Get("/stream.mjpg", [](const httplib::Request&, httplib::Response& res) {
         }
     );
 });
-图3：C++ 编写的轻量级 Web 控制台
+```
 
-📝 总结与思考 (Conclusion)
-性能对比：在同等分辨率下，C++ 版本的 CPU 占用率比 Python 版本降低了约 40%，帧率更加稳定。
+<div style="margin: 20px 0;">
+    <img src="/images/rpi-cpp.jpg" alt="C++ Web 运行界面" style="width: 100%; border-radius: 5px;">
+    <br>
+    <em>图3：C++ 编写的轻量级 Web 控制台</em>
+</div>
 
-开发效率：Python 版本开发仅耗时 2 天，而 C++ 版本涉及 CMake 配置和手动内存管理，耗时约 5 天。
+---
 
-工程价值：该项目展示了从快速原型验证 (POC) 到高性能产品交付的完整工程链路。
+## 📝 总结与思考 (Conclusion)
 
-📂 相关资源
-由于教程文档是我原创撰写，由于篇幅限制，这里提供核心代码下载： <i class="fab fa-github"></i> 查看完整源代码 (GitHub)
+* **性能对比**：在同等分辨率下，C++ 版本的 CPU 占用率比 Python 版本降低了约 40%，帧率更加稳定。
+* **开发效率**：Python 版本开发仅耗时 2 天，而 C++ 版本涉及 CMake 配置和手动内存管理，耗时约 5 天。
+* **工程价值**：该项目展示了从快速原型验证 (POC) 到高性能产品交付的完整工程链路。
+
+## 📂 相关资源
+
+由于教程文档是我原创撰写，由于篇幅限制，这里提供核心代码下载：
+
+<i class="fab fa-github"></i> [查看完整源代码 (GitHub)](#)
