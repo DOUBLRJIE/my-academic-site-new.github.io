@@ -74,7 +74,6 @@ tags:
 我构建了一个“万能动作适配器”：
 
 ```cpp
-```
 template <typename Receiver>  
 class VehicleActionCommand : public ICommand {  
 private:  
@@ -92,7 +91,6 @@ public:
         }  
     }  
 };
-```
 ```
 通过这种方式，底层 Car 的方向盘上只安装了一个无标签的 ICommand 按钮，而上层的装配层（main 函数）则通过依赖注入（DI）将具体的动作粘合进去。
 
