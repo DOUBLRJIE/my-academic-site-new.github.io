@@ -1,5 +1,13 @@
 # **🏋️‍♂️ AI FitCoach Pro: 基于深度学习与大模型的智能健身辅助系统**
+---
 
+title: "AI FitCoach Pro：使用 Google Antigravity 打造私人 AI 健身教练"
+
+date: 2026-04-10
+
+tags:  - python  - 系统设计  - 学习笔记  - antigravity
+
+---
 **项目作者**：刘杰 (人工智能专业 2022级)
 
 **依托项目**：本科毕业设计《基于深度学习的人体姿态分析》
