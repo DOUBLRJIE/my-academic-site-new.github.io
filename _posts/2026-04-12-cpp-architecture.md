@@ -9,7 +9,7 @@ tags:
   - 面试复盘
 ---
 
-## **前言：带着敬畏心踏入 C++ 的世界**
+## **前言：带着好奇心踏入 C++ 的世界**
 
 作为一个习惯了 Python 灵活抽象（“鸭子类型”、自带垃圾回收）以及 C 语言底层直接（指针与内存操作）的开发者，我一直对现代 C++ 抱有敬畏之心。C++ 陡峭的学习曲线不仅在于其繁复的语法，更在于它要求开发者同时具备“系统级内存控制”与“高级面向对象抽象”的能力。
 
@@ -44,7 +44,66 @@ tags:
 * **private**：是绝对安全的保险箱（如车辆的 fuel_ 油量数据），外部代码被编译器严禁直接访问，杜绝了脏数据的产生。  
 * **public**：是受控的对外接口（如 refuel() 加油方法）。  
 * **对比 Python**：不再依赖程序员的自觉（如 _name 约定），而是依靠编译器的铁腕强权。
+```cpp
+#include <iostream>
+#include <string>
 
+using namespace std; // 为了方便
+
+class Vehicle {
+private: 
+    string name_; 
+    int speed_;
+    // 动作 1：新增一个私有属性，用来存油量（外部绝对不能直接改这个值，防止有人凭空变出油来）
+    int fuel_; 
+
+public: 
+    // 动作 2：修改构造函数。既然图纸升级了，造车的时候就必须给一个初始油量
+    Vehicle(string name, int speed, int fuel) {
+        name_ = name;    
+        speed_ = speed;  
+        fuel_ = fuel;    // 将传进来的初始油量存入私有保险箱
+        cout << "[系统] 创造了一辆 " << name_ << "，速度: " << speed_ 
+             << "km/h，初始油量: " << fuel_ << "L" << endl;
+    }
+
+    ~Vehicle() {
+        cout << "[系统] " << name_ << " 被报废销毁了！" << endl;
+    }
+
+    void show() {
+        cout << ">>> 正在驾驶: " << name_ << " (速度: " << speed_ 
+             << "km/h，剩余油量: " << fuel_ << "L)" << endl;
+    }
+
+    // 动作 3：新增加油方法。这是外部唯一能改变油量的合法途径
+    void refuel(int amount) {
+        fuel_ = fuel_ + amount; // 把加的油累加到总油量里 (也可以简写为 fuel_ += amount;)
+        cout << ">>> ⛽ 成功给 " << name_ << " 加油 " << amount 
+             << "L！当前总油量: " << fuel_ << "L" << endl;
+    }
+};
+
+int main() {
+    cout << "--- 程序开始 ---" << endl;
+
+    {
+        // 动作 4：造车的时候，记得传入第三个参数（初始油量，比如这里给 50L）
+        Vehicle myCar("保时捷", 120, 50); 
+        
+        myCar.show(); // 看看初始状态
+        
+        // 调用我们刚才写的加油方法，加 30L 油
+        myCar.refuel(30); 
+        
+        myCar.show(); // 再次查看状态，验证油量是否真的变多了
+        
+    } // myCar 在这里被销毁
+
+    cout << "--- 程序结束 ---" << endl;
+    return 0; 
+}
+```
 
 ### **2. 拥抱 RAII 与智能指针：告别野指针与内存泄漏**
 
