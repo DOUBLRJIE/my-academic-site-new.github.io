@@ -113,7 +113,67 @@ int main() {
 
 * **大括号的魔法**：C++ 严格基于作用域 `{}` 管理对象生命周期。对象一旦离开作用域，必然触发析构函数 `~ClassName()`。  
 * **引用计数 (Reference Counting)**：智能指针就像一把带有芯片的车钥匙。当所有的钥匙（指针）都在作用域结束时被熔毁，引用计数归零，系统就会自动且精准地引爆并回收真正的车辆内存。
+```cpp
+#include <iostream>
+#include <string>
+#include <memory> // 必须引入这个头文件才能使用智能指针
 
+// 注意：这里去掉了 using namespace std;
+
+class Vehicle {
+private:
+    std::string name_; // 加上 std::
+public:
+    Vehicle(std::string name) {
+        name_ = name;
+        std::cout << "[系统] 🛠️ 在堆内存中造出了一辆 " << name_ << std::endl; // 加上 std::
+    }
+    ~Vehicle() {
+        // 当没有任何指针指向这个对象时，它会自动触发！
+        std::cout << "[系统] 💥 " << name_ << " 被彻底销毁，内存已自动回收！" << std::endl;
+    }
+    void honk() {
+        std::cout << ">>> " << name_ << " 发出喇叭声：滴滴！" << std::endl;
+    }
+};
+
+int main() {
+    std::cout << "--- 任务开始 ---" << std::endl;
+
+    // 1. 创建一个空的智能指针 ptr1
+    std::shared_ptr<Vehicle> ptr1 = nullptr; 
+
+    std::cout << "\n>>> [第一阶段：进入局部隔离区]" << std::endl;
+    { // 大括号开始
+        
+        // 2. std::make_shared 是现代 C++ 官方推荐的创建对象的方式 
+        std::shared_ptr<Vehicle> ptr2 = std::make_shared<Vehicle>("装甲车");
+        
+        // use_count() 可以查看当前有几个人在盯着这辆车
+        std::cout << "   当前装甲车的引用计数: " << ptr2.use_count() << std::endl;
+
+        // 3. 像普通指针一样使用它（注意：指针调用方法用箭头 ->）
+        ptr2->honk(); 
+
+        // 4. 将 ptr2 赋值给外面的 ptr1。此时两个指针同时盯着“装甲车”
+        ptr1 = ptr2;
+        std::cout << "   把车钥匙也给了外面的 ptr1 后，引用计数: " << ptr2.use_count() << std::endl;
+
+    } // ⚠️ 第一阶段大括号结束！局部的 ptr2 在这里死掉了。
+    
+    std::cout << "\n>>> [第二阶段：离开局部隔离区]" << std::endl;
+    
+    // 思考：ptr2 死了，装甲车会死吗？
+    std::cout << "   局部的 ptr2 已死，但装甲车的引用计数变为: " << ptr1.use_count() << std::endl;
+    
+    ptr1->honk(); // 依然可以安全调用，绝对不会遇到 C 语言的野指针崩溃！
+
+    std::cout << "\n>>> [程序准备结束...]" << std::endl;
+    // 马上要 return 0 了，main 函数结束，外面的 ptr1 也要死了。
+    
+    return 0;
+}
+```
 *学习感悟：现代 C++ 不是让你不用指针，而是让你用“有教养的指针”。*
 
 ## **Day 2：架构设计的艺术**
@@ -126,7 +186,78 @@ int main() {
 
 * **virtual 的动态绑定**：这是打破 C++ “静态刻板”的钥匙。它告诉编译器在运行时通过对象背后的“虚表（vtable）”来决定调用哪个具体类的函数，而不是在编译时写死。  
 * **虚析构函数的防坑指南**：我深刻记住了，包含虚函数的基类，其析构函数也必须是 virtual 的，否则在使用多态销毁对象时，子类的专属内存将会泄漏。
+```cpp
+#include <iostream>
+#include <string>
+#include <vector>
+#include <memory>
 
+// 1. 基类（父类）：定义通用图纸
+class Vehicle {
+public:
+    // ⚠️ 核心魔法：virtual（虚函数）
+    // 加上 virtual，意味着告诉编译器：“不要现在写死调用哪个函数，等程序跑起来后，看它到底是什么车，再去调对应的声音！”
+    virtual void honk() {
+        std::cout << "[通用车辆] 发出某种声音..." << std::endl;
+    }
+
+    // ⚠️ 面试必考点：只要类里有 virtual 函数，析构函数就必须是 virtual 的！
+    // 否则用智能指针销毁父类指针时，子类的内存会泄露。
+    virtual ~Vehicle() {
+        std::cout << "[系统] 基础 Vehicle 被销毁" << std::endl;
+    }
+};
+
+// 2. 派生类（子类）：汽车，继承自 Vehicle
+class Car : public Vehicle {
+public:
+    // override 关键字明确告诉编译器：我在这里重写了父类的虚函数！
+    void honk() override {
+        std::cout << ">>> 🚗 汽车鸣笛：滴滴滴！" << std::endl;
+    }
+    
+    ~Car() override {
+        std::cout << "[系统] 🚗 Car 的专属零件被销毁" << std::endl;
+    }
+};
+
+// 3. 派生类（子类）：自行车，继承自 Vehicle
+class Bike : public Vehicle {
+public:
+    void honk() override {
+        std::cout << ">>> 🚲 自行车响铃：叮铃铃！" << std::endl;
+    }
+    
+    ~Bike() override {
+        std::cout << "[系统] 🚲 Bike 的专属零件被销毁" << std::endl;
+    }
+};
+
+int main() {
+    std::cout << "--- 多态测试开始 ---" << std::endl;
+
+    // 🎯 见证奇迹的时刻：
+    // 我们建一个车库（vector 数组）。
+    // 这个车库规定只能停“指向 Vehicle 的智能指针”。
+    std::vector<std::shared_ptr<Vehicle>> garage;
+
+    // 但是！因为 Car 和 Bike 继承了 Vehicle，所以我们可以把它们塞进去！这叫“向上转型”
+    garage.push_back(std::make_shared<Car>());
+    garage.push_back(std::make_shared<Bike>());
+
+    std::cout << "\n--- 统一调度开始 ---" << std::endl;
+    
+    // 遍历车库里的每一辆车
+    for (const std::shared_ptr<Vehicle>& v : garage) {
+        // 编译器在这里只知道 v 是一辆 Vehicle，但因为 honk 是 virtual 的
+        // 它会聪明的“动态绑定”，汽车发汽车的声音，自行车发自行车的声音！
+        v->honk(); 
+    }
+
+    std::cout << "\n--- 程序结束，准备清理内存 ---" << std::endl;
+    return 0;
+}
+```
 ### **2. 泛型编程 (Templates) 与命令模式 (Command Pattern)**
 
 为了满足“Car 不认识 Bike，却能调用 Bike 动作”的变态约束，我学习了如何使用 **接口 (ICommand)** 切断物理依赖，并利用 **模板类 (`template <typename T>`)** 实现**类型擦除 (Type Erasure)**。
@@ -164,7 +295,153 @@ public:
 2. **实体层**：Car, Bike, Truck 各司其职，彼此代码文件完全隔离。  
 3. **上层应用层**：利用模板将具体动作包装为抽象接口，实现类型擦除。  
 4. **装配层**：在 main 函数中作为 IoC 容器，完成对象创建与依赖注入。
+```cpp
+#include <iostream>
+#include <memory>
+#include <string>
 
+// ==========================================
+// [Layer 0] 接口层：定义核心抽象，切断物理耦合
+// ==========================================
+
+// 通用动作调用接口 (解开 Car 和 Bike 的强耦合)
+class ICommand {
+public:
+    virtual ~ICommand() = default;
+    virtual void execute() = 0;
+};
+
+// 车辆基础接口
+class IVehicle {
+public:
+    virtual ~IVehicle() = default;
+    virtual void identify() const = 0;
+};
+
+// ==========================================
+// [Layer 1] 实体层：底层业务对象，彼此完全隔离
+// ==========================================
+
+class Bike : public IVehicle {
+public:
+    void identify() const override { std::cout << "[Bike] 是一辆自行车。" << std::endl; }
+
+    // Bike 的专属动作
+    void ringBell() {
+        std::cout << ">>> 🚲 自行车动作：叮铃铃！" << std::endl;
+    }
+};
+
+class Truck : public IVehicle {
+public:
+    void identify() const override { std::cout << "[Truck] 是一辆卡车。" << std::endl; }
+
+    // Truck 的专属动作
+    void flashLights() {
+        std::cout << ">>> 🚚 卡车动作：闪烁大灯！" << std::endl;
+    }
+};
+
+class Car : public IVehicle {
+private:
+    // 核心考点：Car 只依赖 ICommand 抽象接口，对 Bike/Truck 一无所知
+    std::shared_ptr<ICommand> triggerAction_;
+
+public:
+    void identify() const override { std::cout << "[Car] 是一辆小汽车。" << std::endl; }
+
+    // 依赖注入：通过参数将具体的动作逻辑注入进来，而不是在内部 new
+    void setTriggerAction(std::shared_ptr<ICommand> action) {
+        triggerAction_ = std::move(action);
+    }
+
+    // Car 自身的触发逻辑
+    void honkAndTrigger() {
+        std::cout << "[Car] 🚗 汽车按下了方向盘的综合调度按钮..." << std::endl;
+        if (triggerAction_) {
+            triggerAction_->execute(); // 动态绑定，多态调用
+        }
+        else {
+            std::cout << "[Car] 没有绑定任何调度动作。" << std::endl;
+        }
+    }
+};
+
+// ==========================================
+// [Layer 1.5] 工厂层：负责对象的创建
+// ==========================================
+
+// 严格遵守约束 1 和 5：使用普通类和方法，杜绝全局变量和静态 (static) 方法
+class VehicleFactory {
+public:
+    std::shared_ptr<IVehicle> createVehicle(const std::string& type) const {
+        if (type == "Car") return std::make_shared<Car>();
+        if (type == "Bike") return std::make_shared<Bike>();
+        if (type == "Truck") return std::make_shared<Truck>();
+        return nullptr;
+    }
+};
+
+// ==========================================
+// [Layer 2] 上层应用层：泛型动作适配器
+// ==========================================
+
+// 核心考点：利用模板将具体的类和成员函数“包装”成通用的 ICommand 接口
+template <typename Receiver>
+class VehicleActionCommand : public ICommand {
+private:
+    std::shared_ptr<Receiver> receiver_;
+    using ActionFunc = void (Receiver::*)(); // C++ 成员函数指针
+    ActionFunc action_;
+
+public:
+    VehicleActionCommand(std::shared_ptr<Receiver> receiver, ActionFunc action)
+        : receiver_(std::move(receiver)), action_(action) {
+    }
+
+    void execute() override {
+        if (receiver_ && action_) {
+            // 通过指针执行具体车辆的具体动作
+            (receiver_.get()->*action_)();
+        }
+    }
+};
+
+// ==========================================
+// [Layer 3] 装配层 (Main)：IoC 控制反转中心
+// ==========================================
+
+int main() {
+    std::cout << "=== 系统初始化与装配 ===" << std::endl;
+
+    // 1. 创建非静态工厂实例
+    VehicleFactory factory;
+
+    // 2. 通过工厂创建车辆 (这里用 dynamic_pointer_cast 向下转型以便绑定专属动作)
+    std::shared_ptr<Car> car = std::dynamic_pointer_cast<Car>(factory.createVehicle("Car"));
+    std::shared_ptr<Bike> bike = std::dynamic_pointer_cast<Bike>(factory.createVehicle("Bike"));
+    std::shared_ptr<Truck> truck = std::dynamic_pointer_cast<Truck>(factory.createVehicle("Truck"));
+
+    // 3. 需求测试 1：Car 触发 Bike 的响铃
+    // 在上层将 Bike 和 ringBell 动作打包成一个 Command，并注入给 Car
+    std::shared_ptr<ICommand> bikeCmd = std::make_shared<VehicleActionCommand<Bike>>(bike, &Bike::ringBell);
+    car->setTriggerAction(bikeCmd);
+
+    std::cout << "\n--- 场景 1：Car 调度 Bike ---" << std::endl;
+    car->honkAndTrigger();
+
+    // 4. 需求测试 2 (扩展性)：Car 触发 Truck 的闪灯
+    // 验证架构威力：Car 类的代码不需要修改任何一行，即可调度全新的车辆动作！
+    std::shared_ptr<ICommand> truckCmd = std::make_shared<VehicleActionCommand<Truck>>(truck, &Truck::flashLights);
+    car->setTriggerAction(truckCmd);
+
+    std::cout << "\n--- 场景 2：Car 调度 Truck ---" << std::endl;
+    car->honkAndTrigger();
+
+    std::cout << "\n=== 程序结束，智能指针开始自动回收内存 ===" << std::endl;
+    return 0;
+}
+```
 ## **写在最后：学无止境**
 
 这两天的突击，让我深刻体会到 C++ 之父 Bjarne Stroustrup 的设计哲学：**“你不必为你不使用的东西付出代价，而你使用的东西，你将得到最好的性能。”**
