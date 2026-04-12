@@ -1,4 +1,13 @@
-## **layout: post title: "从 Python 到现代 C++：一次 48 小时的架构思维突击与重塑" date: 2026-04-12 description: "记录我如何通过一道高级 C++ 面试题，跨越从脚本语言到系统级语言的思维鸿沟，理解现代 C++ 的内存安全与多态架构。" tags: \[C++, 架构设计, 学习笔记, 面试复盘\]**
+---
+title: "从 Python 到现代 C++：一次 48 小时的架构思维突击与重塑"
+date: 2026-04-12
+permalink: /posts/2026/04/cpp-architecture/
+tags:
+  - C++
+  - 架构设计
+  - 学习笔记
+  - 面试复盘
+---
 
 ## **前言：带着敬畏心踏入 C++ 的世界**
 
@@ -26,23 +35,23 @@
 
 ## **Day 1：跨越内存管理的深渊**
 
-### **1\. 从 struct 到 class：理解封装的本质**
+### **1. 从 struct 到 class：理解封装的本质**
 
 第一步是理解 C++ 的 class 与 C 语言 struct 的本质区别——**权限边界（封装）**。
 
 在学习过程中，我构建了一个“银行金库”的心理模型：
 
-* **private**：是绝对安全的保险箱（如车辆的 fuel\_ 油量数据），外部代码被编译器严禁直接访问，杜绝了脏数据的产生。  
+* **private**：是绝对安全的保险箱（如车辆的 fuel_ 油量数据），外部代码被编译器严禁直接访问，杜绝了脏数据的产生。  
 * **public**：是受控的对外接口（如 refuel() 加油方法）。  
-* **对比 Python**：不再依赖程序员的自觉（如 \_name 约定），而是依靠编译器的铁腕强权。
+* **对比 Python**：不再依赖程序员的自觉（如 _name 约定），而是依靠编译器的铁腕强权。
 
-### **2\. 拥抱 RAII 与智能指针：告别野指针与内存泄漏**
+### **2. 拥抱 RAII 与智能指针：告别野指针与内存泄漏**
 
 这是我受震撼最大的一课。曾经写 C 语言时被 malloc/free 折磨的恐惧，在现代 C++ 中被彻底治愈。
 
-我学习了 C++ 独有的 **RAII（资源获取即初始化）** 机制，并深入理解了 std::shared\_ptr。
+我学习了 C++ 独有的 **RAII（资源获取即初始化）** 机制，并深入理解了 `std::shared_ptr`。
 
-* **大括号的魔法**：C++ 严格基于作用域 {} 管理对象生命周期。对象一旦离开作用域，必然触发析构函数 \~ClassName()。  
+* **大括号的魔法**：C++ 严格基于作用域 `{}` 管理对象生命周期。对象一旦离开作用域，必然触发析构函数 `~ClassName()`。  
 * **引用计数 (Reference Counting)**：智能指针就像一把带有芯片的车钥匙。当所有的钥匙（指针）都在作用域结束时被熔毁，引用计数归零，系统就会自动且精准地引爆并回收真正的车辆内存。
 
 *学习感悟：现代 C++ 不是让你不用指针，而是让你用“有教养的指针”。*
@@ -51,37 +60,37 @@
 
 有了安全的内存基石，我开始挑战题目要求的“无耦合调度”。这要求我打破强类型语言的壁垒。
 
-### **1\. 多态 (Polymorphism) 与接口抽象**
+### **1. 多态 (Polymorphism) 与接口抽象**
 
-如何在 C++ 的 std::vector 中同时存放 Car 和 Bike？答案是继承同一个基类（接口），并使用虚函数。
+如何在 C++ 的 `std::vector` 中同时存放 Car 和 Bike？答案是继承同一个基类（接口），并使用虚函数。
 
 * **virtual 的动态绑定**：这是打破 C++ “静态刻板”的钥匙。它告诉编译器在运行时通过对象背后的“虚表（vtable）”来决定调用哪个具体类的函数，而不是在编译时写死。  
 * **虚析构函数的防坑指南**：我深刻记住了，包含虚函数的基类，其析构函数也必须是 virtual 的，否则在使用多态销毁对象时，子类的专属内存将会泄漏。
 
-### **2\. 泛型编程 (Templates) 与命令模式 (Command Pattern)**
+### **2. 泛型编程 (Templates) 与命令模式 (Command Pattern)**
 
-为了满足“Car 不认识 Bike，却能调用 Bike 动作”的变态约束，我学习了如何使用 **接口 (ICommand)** 切断物理依赖，并利用 **模板类 (template \<typename T\>)** 实现**类型擦除 (Type Erasure)**。
+为了满足“Car 不认识 Bike，却能调用 Bike 动作”的变态约束，我学习了如何使用 **接口 (ICommand)** 切断物理依赖，并利用 **模板类 (template <typename T>)** 实现**类型擦除 (Type Erasure)**。
 
 我构建了一个“万能动作适配器”：
 
-template \<typename Receiver\>  
+```cpp
+template <typename Receiver>  
 class VehicleActionCommand : public ICommand {  
 private:  
-    std::shared\_ptr\<Receiver\> receiver\_;  
-    using ActionFunc \= void (Receiver::\*)();   
-    ActionFunc action\_;
+    std::shared_ptr<Receiver> receiver_;  
+    using ActionFunc = void (Receiver::*)();   
+    ActionFunc action_;
 
 public:  
-    VehicleActionCommand(std::shared\_ptr\<Receiver\> receiver, ActionFunc action)  
-        : receiver\_(std::move(receiver)), action\_(action) {}
+    VehicleActionCommand(std::shared_ptr<Receiver> receiver, ActionFunc action)  
+        : receiver_(std::move(receiver)), action_(action) {}
 
     void execute() override {  
-        if (receiver\_ && action\_) {  
-            (receiver\_.get()-\>\*action\_)(); // 执行具体车辆的具体动作  
+        if (receiver_ && action_) {  
+            (receiver_.get()->*action_)(); // 执行具体车辆的具体动作  
         }  
     }  
 };
-
 通过这种方式，底层 Car 的方向盘上只安装了一个无标签的 ICommand 按钮，而上层的装配层（main 函数）则通过依赖注入（DI）将具体的动作粘合进去。
 
 ## **最终落地：一份令自己满意的答卷**
