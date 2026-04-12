@@ -44,12 +44,11 @@ tags:
 * **private**：是绝对安全的保险箱（如车辆的 fuel_ 油量数据），外部代码被编译器严禁直接访问，杜绝了脏数据的产生。  
 * **public**：是受控的对外接口（如 refuel() 加油方法）。  
 * **对比 Python**：不再依赖程序员的自觉（如 _name 约定），而是依靠编译器的铁腕强权。
+
 ```cpp
 #include <iostream>
 #include <string>
-
 using namespace std; // 为了方便
-
 class Vehicle {
 private: 
     string name_; 
