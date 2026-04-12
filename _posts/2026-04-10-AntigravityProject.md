@@ -84,25 +84,11 @@
 ### **1\. 本地运行 (推荐)**
 
 由于项目强依赖本地摄像头流媒体、多线程音频 (pygame) 和文件写入，推荐在本地环境运行以获得最佳性能（约 25+ FPS）。
-
+\# 0\.敬请期待开源
 \# 1\. 克隆仓库  
-git clone \[https://github.com/YourUsername/AI-FitCoach-Pro.git\](https://github.com/YourUsername/AI-FitCoach-Pro.git)  
-cd AI-FitCoach-Pro
-
 \# 2\. 安装依赖 (使用虚拟环境更佳)  
-pip install \-r requirements.txt
-
 \# 3\. 配置 API Key (智谱 GLM)  
-\# 在项目根目录创建 .env 文件并添加：  
-ZHIPUAI\_API\_KEY="你的智谱大模型API密钥"
-
 \# 4\. 启动系统  
-streamlit run app.py
-
-### **2\. 关于云端部署 (Vercel / Streamlit Cloud)**
-
-* **展示级部署**：如果您希望将本项目作为静态页面或文档展示，使用 **Vercel** 是完美的选择。  
-* **完整功能部署**：由于 Vercel 是 Serverless 架构，不支持长时间运行的 WebSockets（Streamlit 必需）以及服务端直接获取本地摄像头视频流。如需在线体验完整的摄像头捕捉功能，建议将代码推送到 **Streamlit Community Cloud** 或 **Render**，并通过 WebRTC 改造视频流处理模块。
 
 ## **🎓 结语**
 
