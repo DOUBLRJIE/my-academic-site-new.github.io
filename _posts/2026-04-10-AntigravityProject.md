@@ -1,11 +1,12 @@
 ---
-
 title: "AI FitCoach Pro：使用 Google Antigravity 打造私人 AI 健身教练"
-
 date: 2026-04-10
-
-tags:  - python  - 系统设计  - 学习笔记  - antigravity
-
+permalink: /posts/2026/04/antigravity-fitcoach/
+tags:
+  - python
+  - 系统设计
+  - 学习笔记
+  - antigravity
 ---
 # **🏋️‍♂️ AI FitCoach Pro: 基于深度学习与大模型的智能健身辅助系统**
 
