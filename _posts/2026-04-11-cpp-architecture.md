@@ -69,7 +69,7 @@ tags:
 
 ### **2. 泛型编程 (Templates) 与命令模式 (Command Pattern)**
 
-为了满足“Car 不认识 Bike，却能调用 Bike 动作”的变态约束，我学习了如何使用 **接口 (ICommand)** 切断物理依赖，并利用 **模板类 (template <typename T>)** 实现**类型擦除 (Type Erasure)**。
+为了满足“Car 不认识 Bike，却能调用 Bike 动作”的变态约束，我学习了如何使用 **接口 (ICommand)** 切断物理依赖，并利用 **模板类 (`template <typename T>`)** 实现**类型擦除 (Type Erasure)**。
 
 我构建了一个“万能动作适配器”：
 
