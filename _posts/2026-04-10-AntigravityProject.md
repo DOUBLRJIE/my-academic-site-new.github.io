@@ -1,0 +1,115 @@
+# **🏋️‍♂️ AI FitCoach Pro: 基于深度学习与大模型的智能健身辅助系统**
+
+**项目作者**：刘杰 (人工智能专业 2022级)
+
+**依托项目**：本科毕业设计《基于深度学习的人体姿态分析》
+
+**核心工具**：Google Antigravity (Agent-First IDE)
+
+## **📖 项目简介**
+
+本项目是一个结合了**计算机视觉 (MediaPipe)**、**传统机器学习 (KNN)** 与**大语言模型 (ZhipuAI)** 的居家智能健身辅助系统。系统仅需普通单目摄像头，即可实时提取人体 33 个三维骨骼关键点，精准识别用户的健身意图（如深蹲、弯举），并通过有限状态机（FSM）客观评估动作标准度。
+
+在此基础上，本项目突破了传统健身软件冰冷、机械的交互模式。通过引入动态大语言模型人设与神经网络语音合成，系统能像真实的“人类私教”一样，为您提供温柔、专业且多样的情绪价值与运动指导。
+
+## **🚀 Google Antigravity 学习与实战总结**
+
+本项目是从零到一完全基于 **Google Antigravity** 平台构建的。与传统的代码补全工具（如 GitHub Copilot）不同，Antigravity 是一个真正的 **Agent-First（智能体优先）** 平台。以下是我在本项目中总结的 Antigravity 高阶使用教程与实战经验：
+
+### **1\. 范式转换：从“写代码”到“系统架构”**
+
+在使用 Antigravity 时，我最大的学习收获是**角色的转变**。我不再逐行编写代码，而是扮演\*\*“系统架构师”**和**“产品经理”\*\*。
+
+* **Agent Manager 的上帝视角**：对于多文件（UI、数据层、逻辑层、模型层）的复杂工程，必须使用 Agent Manager 模式。通过向 Agent 提供宏观的架构级 Prompt，它可以自主拆解任务、规划目录结构（如 app.py, fitness\_tracker.py, audio\_manager.py）。  
+* **自动化环境配置**：Agent 具备操作 Terminal（终端）的能力。我学会了在提示词中显式声明依赖包（pip install mediapipe edge-tts pygame），Agent 会自动执行安装，我只需授权（Allow）即可，极大地抹平了环境配置的痛点。
+
+### **2\. Prompt Engineering (提示词工程) 实战**
+
+为了让 Antigravity 输出符合论文要求的高质量代码，我总结了一套“Agent 驱动开发 Prompt 模板”：
+
+* **Role & Mission (角色与使命)**：明确告诉它 "You are an expert Python engineer building a fitness assistant based on my thesis."  
+* **Tech Stack Constraints (技术栈约束)**：严格限定使用的库，防止大模型幻觉（如明确指定 edge-tts 和 pygame.mixer）。  
+* **Algorithmic Logic (算法逻辑)**：用自然语言精准描述数学逻辑。例如，我向 Agent 描述了使用 math.atan2 计算三点夹角的公式，以及 REQUIRED\_STREAK \= 2 的时序抗抖动逻辑，它能完美将其转化为 Python 代码。
+
+### **3\. 渐进式迭代：从 V1 (MVP) 到 V2 (全功能增强版)**
+
+在学习使用 Antigravity 的过程中，我深刻体会到了敏捷开发的魅力。我将其分为两个阶段：
+
+* **V1 核心跑通**：利用 Agent 快速写出 MediaPipe 特征提取、KNN 模型训练和基础的 Streamlit 视频流渲染。验证了论文核心算法（FSM 状态机）的可行性。  
+* **V2 体验飞跃**：在 V1 基础上，我通过 Editor 视角的上下文对话，指挥 Agent 进行了复杂的“手术级”改造。引入了多线程音频管理、SQLite 数据持久化以及复杂的大模型人设系统。由于 Antigravity 能理解全局上下文，这次重构没有破坏底层的视觉识别逻辑。
+
+## **🛠️ V2 版本核心系统架构与升级亮点**
+
+本项目采用分层架构设计（数据感知层、核心逻辑层、表现交互层、数据持久层）。在 V2 版本中，我重点进行了以下创新与升级：
+
+### **🌟 1\. 拟人化多模态交互系统 (多线程/双音轨)**
+
+* **温柔的神经网络语音**：摒弃了生硬的系统自带 TTS，让 Agent 接入了 edge-tts，并指定 zh-CN-XiaoxiaoNeural（温柔女性音色）。  
+* **无冲突双通道混音**：通过引入 pygame.mixer，实现了 **BGM（低音量背景音乐）** 与 **TTS 语音指导** 的双轨道独立播放。结合线程安全锁，彻底解决了 Streamlit 界面卡顿和语音吞字的问题。
+
+### **🧠 2\. 破除死板的“AI味”：动态 LLM 教练人设**
+
+传统 API 调用往往千篇一律。我通过 Prompt Engineering 对接入的智谱 GLM 进行了深度调优：
+
+* **参数调优**：将 temperature 提升至 0.8，top\_p 设为 0.9，极大丰富了 AI 的词汇量与发散能力。  
+* **动态人设盲盒**：在代码中预设了【严格魔鬼教头】、【温柔知心学姐】、【硬核解剖学大师】等多种人设。每次锻炼结束，系统随机抽取一人设生成总结报告，配合平均极限角度数据，让每次反馈都充满惊喜与个性化。  
+* **本地语料库扩充**：扩充了实时动作纠偏的语料字典，配合 random.choice() 实现了“稳住底盘！”、“再低一点点！”等丰富的沉浸式短促鼓励。
+
+### **📊 3\. 沉浸式宽屏 UI 与数据看板 (Streamlit)**
+
+* **美化升级**：启用 layout="wide" 宽屏模式，并通过 st.markdown 注入自定义 CSS，为数据面板添加了现代化的圆角与阴影特效。  
+* **多标签页布局**：分为 🏋️‍♂️ 锻炼主页、📈 成长轨迹、⚙️ 系统设置（支持用户自主切换音乐与教练音色）。  
+* **视觉化发力进度条**：将底层计算得出的关节角度，实时映射并归一化为 Streamlit 进度条，直观反映肌肉发力深度。
+
+### **💾 4\. 引入本地数据持久化与卡路里追踪**
+
+* 利用内置的 sqlite3 构建了轻量级本地数据库，记录每次训练的动作类型、完美次数、失误次数。  
+* 增加了基于动作次数的卡路里消耗估算算法，在“成长轨迹”页面形成可视化的历史报告。
+
+## **📐 核心算法解析**
+
+本系统不仅在工程上完善，底层更拥有扎实的算法支撑（源自本人的毕业设计）：
+
+1. **时序抗抖动算法 (Temporal Anti-shake)**  
+   真实场景中，因光线或路人走动，KNN 分类器单帧预测极易“闪烁”。系统引入连续帧缓冲器：  
+   \# 仅当连续 REQUIRED\_STREAK(2) 帧预测一致时，才确认动作转换  
+   if sum(\[1 for label in label\_buffer if label \== current\_prediction\]) \>= REQUIRED\_STREAK:  
+       State\_stable \= current\_prediction
+
+2. **有限状态机 (FSM) 与空间极值追踪**  
+   摒弃了容易漏判的“固定角度阈值法”。系统分为 relaxed（准备）与 flexed（发力）两个状态。进入 flexed 时，初始化极小值 Angle\_min，并在运动周期内实时追踪关节深度的极限。当用户站直切回 relaxed 时，才对 Angle\_min 进行客观评级。
+
+## **💻 快速开始与部署指南**
+
+### **1\. 本地运行 (推荐)**
+
+由于项目强依赖本地摄像头流媒体、多线程音频 (pygame) 和文件写入，推荐在本地环境运行以获得最佳性能（约 25+ FPS）。
+
+\# 1\. 克隆仓库  
+git clone \[https://github.com/YourUsername/AI-FitCoach-Pro.git\](https://github.com/YourUsername/AI-FitCoach-Pro.git)  
+cd AI-FitCoach-Pro
+
+\# 2\. 安装依赖 (使用虚拟环境更佳)  
+pip install \-r requirements.txt
+
+\# 3\. 配置 API Key (智谱 GLM)  
+\# 在项目根目录创建 .env 文件并添加：  
+ZHIPUAI\_API\_KEY="你的智谱大模型API密钥"
+
+\# 4\. 启动系统  
+streamlit run app.py
+
+### **2\. 关于云端部署 (Vercel / Streamlit Cloud)**
+
+* **展示级部署**：如果您希望将本项目作为静态页面或文档展示，使用 **Vercel** 是完美的选择。  
+* **完整功能部署**：由于 Vercel 是 Serverless 架构，不支持长时间运行的 WebSockets（Streamlit 必需）以及服务端直接获取本地摄像头视频流。如需在线体验完整的摄像头捕捉功能，建议将代码推送到 **Streamlit Community Cloud** 或 **Render**，并通过 WebRTC 改造视频流处理模块。
+
+## **🎓 结语**
+
+通过这个毕业设计项目，我不仅深化了对计算机视觉和机器学习理论的理解，更重要的是，我掌握了如何通过 **Google Antigravity** 与 AI 进行深度协同编程。
+
+AI 不仅仅是“代码补全器”，它是我的**架构顾问、前端切图仔和代码审查员**。学会如何向 Agent 清晰地描述业务逻辑（Prompt Engineering），将是未来程序员不可或缺的核心竞争力。
+
+感谢在学习与开发过程中给予指导的导师（余南南 老师），以及强大的开源社区。
+
+*Created with ❤️ by 刘杰 utilizing Google Antigravity & AI*
